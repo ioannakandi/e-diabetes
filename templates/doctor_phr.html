@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>e-diabetes - Doctor</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -27,72 +27,72 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-      <!-- Sidebar -->
-      <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
-          <!-- Sidebar - Brand -->
-          <a class="sidebar-brand d-flex align-items-center justify-content-center" href="doctor.html">
-              <div class="sidebar-brand-icon rotate-n-15">
-                  <i class="fas fa-medkit"></i>
-              </div>
-              <div class="sidebar-brand-text mx-3">e-diabetes <sup>doctor</sup></div>
-          </a>
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="doctor.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-medkit"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">e-diabetes <sup>doctor</sup></div>
+            </a>
 
-          <!-- Divider -->
-          <hr class="sidebar-divider my-0">
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
-          <!-- Nav Item - Dashboard -->
-          <li class="nav-item active">
-              <a class="nav-link" href="doctor.html">
-                  <i class="fas fa-fw fa-tachometer-alt"></i>
-                  <span>Dashboard</span></a>
-          </li>
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="doctor.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
 
-          <!-- Divider -->
-          <hr class="sidebar-divider">
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-          <!-- Heading -->
-          <div class="sidebar-heading">
-              Actions
-          </div>
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Actions
+            </div>
 
-          <!-- Nav Item - Charts -->
-          <li class="nav-item">
-              <a class="nav-link" href="doctor_phr.html">
-                  <i class="fas fa-fw fa-book"></i>
-                  <span>Patients</span></a>
-          </li>
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link active" href="doctor_phr.html">
+                    <i class="fas fa-fw fa-book"></i>
+                    <span>Patients</span></a>
+            </li>
 
-          <!-- Nav Item - Tables -->
-          <li class="nav-item">
-              <a class="nav-link" href="doctor_prescription.html">
-                  <i class="fas fa-fw fa-edit"></i>
-                  <span>Prescription</span></a>
-          </li>
+            <!-- Nav Item - Tables -->
+            <li class="nav-item">
+                <a class="nav-link" href="doctor_prescription.html">
+                    <i class="fas fa-fw fa-edit"></i>
+                    <span>Prescription</span></a>
+            </li>
 
-          <li class="nav-item">
-              <a class="nav-link" href="doctor_account.html">
-                  <i class="fas fa-fw fa-user"></i>
-                  <span>Acount</span></a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link" href="doctor_account.html">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Account</span></a>
+            </li>
 
-          <li class="nav-item">
-              <a class="nav-link" href="doctor_support.html">
-                  <i class="fas fa-fw fa-table"></i>
-                  <span>Support</span></a>
-          </li>
+            <li class="nav-item">
+                <a class="nav-link" href="doctor_support.html">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Support</span></a>
+            </li>
 
-          <!-- Divider -->
-          <hr class="sidebar-divider d-none d-md-block">
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
 
-          <!-- Sidebar Toggler (Sidebar) -->
-          <div class="text-center d-none d-md-inline">
-              <button class="rounded-circle border-0" id="sidebarToggle"></button>
-          </div>
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
 
 
-      </ul>
-      <!-- End of Sidebar -->
+        </ul>
+        <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -272,7 +272,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id = "username"></span>
                                 <img class="img-profile rounded-circle"
                                     src="img/undraw_profile.svg">
                             </a>
@@ -292,7 +292,7 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal" onclick="logout();">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -308,26 +308,10 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+                    <h1 class="h3 mb-4 text-gray-800">Patients</h1>
 
                 </div>
                 <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
@@ -366,6 +350,35 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+
+    <script>
+    //function to get a cookie's value
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0;i < ca.length;i++) {
+          var c = ca[i];
+          while (c.charAt(0)==' ') c = c.substring(1,c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+      }
+      return null;
+    }
+    //show the username on the top right side.
+    document.getElementById('username').innerHTML += getCookie("username");
+
+    //this is the function to log out (set username cookie as null)
+    function logout(){
+      document.cookie = "username=; path=/;";
+    }
+
+    </script>
 
 </body>
 
