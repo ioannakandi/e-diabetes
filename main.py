@@ -26,6 +26,8 @@ client = MongoClient('mongodb://'+mongodb_hostname+':27017/')
 db = client['e_diabetes']
 #choose the users collection
 users = db['users']
+#choose the patient_data collection
+patient_data = db['patient_data']
 
 # App config.
 app = Flask(__name__, static_url_path='', 
@@ -62,14 +64,12 @@ def signup():
         password = request.args.get('password')
         userType = request.args.get('userType')
         existingUser = users.find({'username':username})
-        #in this array the data will be stored (in case of a patient)
-        data = []
         
         if existingUser.count() !=0 : 
             return Response('{"status":"anotheruser"}', status=200, mimetype="application/json")
         else:
             users.insert_one({'firstName': firstName,'lastName': lastName,'username': username,
-                                  'email': email, 'password':password, 'userType':userType, 'data': data})
+                                  'email': email, 'password':password, 'userType':userType})
             return Response('{"status":"success"}', status=200, mimetype="application/json")       
     return Response('{"status":"error"}', status=500, mimetype="application/json")
 

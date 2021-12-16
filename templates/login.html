@@ -20,6 +20,10 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- jQuery libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
 </head>
 
 <body style="background-color:RoyalBlue;">
@@ -40,15 +44,15 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" id="signinForm">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address..." required>
+                                            <input type="username" class="form-control form-control-user"
+                                                id="username"
+                                                placeholder="Enter Username" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password" required>
+                                                id="password" placeholder="Password" required>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -85,6 +89,44 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- JavaScript for performing requests to backend -->
+    <script>
+    $(document).ready(function() {
+
+        $("#signinForm").submit(function(e) {
+          //prevent Default functionality
+          e.preventDefault();
+          let login_username = $("#username").val();
+          let login_password = $("#password").val();
+          $.get(
+            "http://localhost:5000/signin",
+            {
+              username:login_username,
+              password:login_password
+            })
+            .done(function (response) {
+              console.log(response);
+              //check response userType
+              if(response.userType == "patient")
+              {
+                window.location.replace("patient.html");
+              }
+              else if (response.userType == "doctor")
+              {
+                window.location.replace("doctor.html");
+              }
+              //add username as cookie
+              document.cookie = "username="+response.username+";path=/";
+            })
+            .fail(function (response) {
+              console.error(response.status, response.responseText);
+              window.alert("Please try again.");
+            });
+          });
+        })
+    </script>
+
 
 </body>
 
