@@ -66,7 +66,7 @@ def signup():
         existingUser = users.find({'username':username})
         
         if existingUser.count() !=0 : 
-            return Response('{"status":"anotheruser"}', status=200, mimetype="application/json")
+            return Response('{"status":"anotheruser"}', status=500, mimetype="application/json")
         else:
             users.insert_one({'firstName': firstName,'lastName': lastName,'username': username,
                                   'email': email, 'password':password, 'userType':userType})
