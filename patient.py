@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#Created on Sun Dec 26 18:08:45 2021
+#Created on Tue Dec 28 16:27:15 2021
 
 #author: Pavlos Nikolaos Toumlelis
 
@@ -113,18 +113,14 @@ def sendemail():
 def data_import():
     if request.method == 'GET':
         #get the needed arguments (Glucose,BloodPressure,Insulin,BMI,Age)
+        username = request.args.get('username')
         Glucose = request.args.get('Glucose')
         BloodPressure = request.args.get('BloodPressure')
         Insulin = request.args.get('Insulin')
         BMI = request.args.get('BMI')
         Age = request.args.get('Age')
-
-#patient will now import their current data
-Glucose=int(input('Type your current glucose level\t'))
-BloodPressure=int(input('Type your current BloodPressure\t'))
-BMI=float(input('Type your current bmi level\t'))
-Age=int(input("Type your age\t"))
-Insulin=int(input('Type your insulin level two hours after glucose administration\t'))
+        patient_data.insert_one({'username': username, 'Glucose' : Glucose, 'BloodPressure' : BloodPressure, 'Insulin' : Insulin, 'BMI' : BMI, 'Age' : Age})
+        return Response('{"status" : "imported data is successful"}')
 
 
 if __name__ == "__main__":
