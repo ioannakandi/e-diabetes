@@ -66,7 +66,27 @@ def drDataImport():
         else:
             return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json")    
         
+
+
+
+
+# endpoint for doctor's perscription import
+@app.route("/perscriptionImport",methods=['GET', 'POST'])
+@cross_origin()
+def perscriptionImport():
+    if request.method == 'GET':
+        username = request.args.get('username')
+        perscription = request.args.get('perscription')
         
+        new_perscription = {"$set": {'perscription':perscription}}
+        
+        query_cursor=patient_data.update_many({"username":username}, new_perscription)
+        
+        
+       
+        #responses for successfull data import or errors respectively
+        return Response('{"message":"Perscription imported successfully!"}', status=200, mimetype="application/json")
+    return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json")         
 
 
 
