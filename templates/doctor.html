@@ -195,8 +195,8 @@
 
                                 <div class="form-group row">
 									 <div class="col-sm-6">
-                                        <label for="username">username</label>
-                                        <input type="text" class="form-control" id="username" name="username" placeholder="username" required >
+                                        <label for="username">Username</label>
+                                        <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" required >
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="Glucose">Glucose</label>
@@ -328,7 +328,7 @@
       let Insulin = $("#Insulin").val();
       let BMI = $("#BMI").val();
       let Age = $("#Age").val();
-	  let username = $("#username").val();
+	  let Username = $("#Username").val();
       //make the request to the back-end (it's a GET request, just like anything else we will use)
         $.get(
           "http://localhost:5000/drDataImport",
@@ -338,7 +338,7 @@
             insulin:Insulin,
             bmi:BMI,
             age:Age,
-			username:username,
+			username:Username,
           })
           .done(function (response) {
             //show an alert on screen with the response from the back-end (get the value of the message field)
