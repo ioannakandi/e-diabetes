@@ -108,7 +108,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                   
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -137,7 +137,7 @@
                             </div>
                         </li>
 
-                        
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -191,22 +191,22 @@
 
                                 <div class="form-group row">
 									 <div class="col-sm-12">
-                                        <label for="username">username</label>
-                                        <input type="text" class="form-control" id="username" name="username" placeholder="username" required >
+                                        <label for="Username">Username</label>
+                                        <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" required >
                                     </div>
-                                    
+
 								</div>
-								
+
 								<div class="form-group row">
                                     <div class="col-sm-12">
                                         <label for="Prescription">Prescription</label>
                                         <input type="text" class="form-control" id="Prescription" name="Prescription" placeholder="Prescription" required >
                                     </div>
 								</div>
-								
-								 
-								
-                                
+
+
+
+
                                   <button id ="importData" type="submit" class="btn btn-primary px-4 float-right">Import</button>
 
 
@@ -219,8 +219,8 @@
 
     </div>
     <!-- End of Page Wrapper -->
-	
-	
+
+
 	<!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
@@ -293,22 +293,22 @@
     function logout(){
       document.cookie = "username=; path=/;";
     }
-	
-	
+
+
 	//get the prescription form by id
     $("#dataImportForm").submit(function(e) {
       //prevent Default functionality
       e.preventDefault();
       //get the fields of the form based on the id
       let prescription = $("#Prescription").val();
-	  let username = $("#username").val();
+	  let Username = $("#Username").val();
       //make the request to the back-end (it's a GET request, just like anything else we will use)
         $.get(
           "http://localhost:5000/perscriptionImport",
           {
-            
+
             perscription:prescription,
-			username:username,
+			username:Username,
           })
           .done(function (response) {
             //show an alert on screen with the response from the back-end (get the value of the message field)

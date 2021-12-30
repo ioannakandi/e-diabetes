@@ -12,7 +12,7 @@ from flask import Flask, render_template, flash, request, Markup, session, Respo
 from flask_mail import Mail, Message
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 import time, os, sys
-import datetime
+from datetime import datetime
 from flask_cors import CORS, cross_origin
 import json
 import csv
@@ -37,7 +37,7 @@ users = db['users']
 patient_data = db['patient_data']
 
 # App config.
-app = Flask(__name__, static_url_path='', 
+app = Flask(__name__, static_url_path='',
             static_folder='templates',
             template_folder='templates')
 DEBUG = True
@@ -48,11 +48,20 @@ CORS(app)
 mail= Mail(app)
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'XXX'
+app.config['MAIL_USERNAME'] = 'kostismvg@gmail.com'
 app.config['MAIL_PASSWORD'] = 'XXX'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
+
+#this is a function to send an email if the blood pressure o a patient is high
+def sendemail(doctor, patient, BloodPressure):
+   doctor_found = users.find({'username':doctor},{"email": 1, "_id":0})
+   doctor_found_list_cur = list(doctor_found)
+   doctor_email = doctor_found_list_cur[0].get("email")
+   msg = Message('Abnormal Blood Pressure', sender = 'kostismvg@gmail.com', recipients = [doctor_email])
+   msg.body = "The blood pressure of the patient "+str(patient)+" is abnormal "+"("+str(BloodPressure)+")"
+   mail.send(msg)
 
 @app.route("/")
 @cross_origin()
@@ -71,13 +80,13 @@ def signup():
         password = request.args.get('password')
         userType = request.args.get('userType')
         existingUser = users.find({'username':username})
-        
-        if existingUser.count() !=0 : 
+
+        if existingUser.count() !=0 :
             return Response('{"status":"anotheruser"}', status=500, mimetype="application/json")
         else:
             users.insert_one({'firstName': firstName,'lastName': lastName,'username': username,
                                   'email': email, 'password':password, 'userType':userType})
-            return Response('{"status":"success"}', status=200, mimetype="application/json")       
+            return Response('{"status":"success"}', status=200, mimetype="application/json")
     return Response('{"status":"error"}', status=500, mimetype="application/json")
 
 #this is the endpoint for logging into the platform
@@ -90,7 +99,7 @@ def signin():
         existingUser = users.find({'username':username,'password':password})
         doctorCategory = users.find({'username':username,'userType':'doctor'})
         patientCategory = users.find({'username':username,'userType':'patient'})
-        
+
         #check if the user exists and the user type (doctor or patient)
         if existingUser.count() !=0 and doctorCategory.count()!=0:
             response_data = {'username': str(username), 'userType':'doctor'}
@@ -101,18 +110,6 @@ def signin():
         else:
             return Response('{"userType":"nonexistent"}', status=500, mimetype="application/json")
     return Response('{"userType":"nonexistent"}', status=500, mimetype="application/json")
-
-
-@app.route("/sendemail")
-def sendemail():
-   username = request.args.get('username')
-   doctor_found = users.find({'username':username},{"email": 1, "_id":0})
-   doctor_found_list_cur = list(doctor_found)
-   doctor_email = doctor_found_list_cur[0].get("email")
-   msg = Message('Hello', sender = 'XXX', recipients = [doctor_email])
-   msg.body = "Hello Flask message sent from Flask-Mail"
-   mail.send(msg)
-   return "Sent"
 
 
 #this is the endpoint for predicting if a patient will need insulin or not
@@ -128,7 +125,7 @@ def predict():
         Age = request.args.get('Age')
         #read the dataset that we will use to make the prediction
         pdata = pd.read_csv("diabetes.csv")
-        columns = list(pdata)[0:-1] # Excluding Outcome column which is the one we want to predict 
+        columns = list(pdata)[0:-1] # Excluding Outcome column which is the one we want to predict
         n_true = len(pdata.loc[pdata['Outcome'] == True])
         n_false = len(pdata.loc[pdata['Outcome'] == False])
         #use only the specific columns to train our model
@@ -138,11 +135,11 @@ def predict():
         Y = pdata[predicted_class]. values   # Predicted class (1=True, 0=False) (1 X m)
         split_test_size = 0.30
         x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=split_test_size, random_state=52)
-        #Replace 0s with serial mean 
+        #Replace 0s with serial mean
         rep_0 = SimpleImputer(missing_values=0, strategy="mean")
         x_train = rep_0.fit_transform(x_train)
         x_test = rep_0.fit_transform(x_test)
-        #Train Naive Bayes algorithm 
+        #Train Naive Bayes algorithm
         # Lets creat the model
         diab_model = GaussianNB()
         diab_model.fit(x_train, y_train.ravel())
@@ -156,17 +153,63 @@ def predict():
         new_output = diab_model.predict(new_input)
         #transform the array of new_output to string and check the value.
         prediction_result = np.array2string(new_output)
-        #if it is 0 then return a message that says that the patient does not need insulin. If it is 1 then 
+        #if it is 0 then return a message that says that the patient does not need insulin. If it is 1 then
         #suggest that the patient needs insulin
         if "0" in prediction_result:
-           return Response('{"message":"Based on Naive Bayes ML algorithm, the patient does not need insulin."}', status=200, mimetype="application/json") 
+           return Response('{"message":"Based on Naive Bayes ML algorithm, the patient does not need insulin."}', status=200, mimetype="application/json")
         elif "1" in prediction_result:
             return Response('{"message":"Based on Naive Bayes ML algorithm, the patient needs insulin."}', status=200, mimetype="application/json")
         else:
             return Response('{"message":"Please try again."}', status=500, mimetype="application/json")
-        
 
 
+# endpoint for importing patients' data as a doctor
+@app.route("/drDataImport",methods=['GET', 'POST'])
+@cross_origin()
+def drDataImport():
+    if request.method == 'GET':
+        username = request.args.get('username')
+        age = request.args.get('age')
+        bmi = request.args.get('bmi')
+        glucose = request.args.get('glucose')
+        bloodPressure = request.args.get('bloodPressure')
+        insulin = request.args.get('insulin')
+        now = datetime.now()
+        today = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+
+        existingPatient = users.find({'username':username})
+
+        if existingPatient.count() !=0 :
+
+            patient_data.insert_one({'username': username,'age': int(age),'bmi': int(bmi),'gluose': int(glucose),
+                                 'bloodPressure':int(bloodPressure),'insulin': int(insulin),'date': today})
+
+
+            return Response('{"message":"Data imported successfully!"}', status=200, mimetype="application/json")
+        else:
+            return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json")
+
+
+
+
+
+# endpoint for doctor's perscription import
+@app.route("/perscriptionImport",methods=['GET', 'POST'])
+@cross_origin()
+def perscriptionImport():
+    if request.method == 'GET':
+        username = request.args.get('username')
+        perscription = request.args.get('perscription')
+
+        new_perscription = {"$set": {'perscription':perscription}}
+
+        query_cursor=patient_data.update_many({"username":username}, new_perscription)
+
+
+
+        #responses for successfull data import or errors respectively
+        return Response('{"message":"Perscription imported successfully!"}', status=200, mimetype="application/json")
+    return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json") 
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
