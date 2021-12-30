@@ -166,6 +166,61 @@
                     <h1 class="h3 mb-4 text-gray-800">Account</h1>
 
                 </div>
+				<br><br>
+				
+				  <form style="width:90%; margin:auto;" id="drAccountManagement">
+                    <h4 class="h2-responsive" style="text-align:center;">Manage your Account</h4>
+					<br><br>
+                    <div class="row">
+                        <div class="col-md-10 mx-auto">
+
+
+							<div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="old_username" >Current Username </label>
+                                        <input type="text" class="form-control" id="old_username" name="old_username" placeholder="current username" required >
+                                    </div>
+									
+									<div class="col-sm-6">
+                                        <label for="new_username" >New Username </label>
+                                        <input type="text"  class="form-control" id="new_username" name="new_username" placeholder="new username" required >
+                                    </div>
+								</div>
+
+                                <div class="form-group row">
+                                     <div class="col-sm-6">
+                                        <label for="firstname">First Name</label>
+                                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="first name" required >
+                                    </div>
+									<div class="col-sm-6">
+                                        <label for="lastname">Last Name</label>
+                                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="last name" required >
+                                    </div>
+								</div>
+								
+								  <div class="form-group row">
+									<div class="col-sm-6">
+                                        <label for="email">e-mail</label>
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="e-mail" required >
+                                    </div>
+									 <div class="col-sm-6">
+                                        <label for="password">Password</label>
+                                        <input type="text" class="form-control" id="password" name="password" placeholder="password" required >
+                                    </div>
+                                    
+								</div>
+								
+                                
+								
+								
+                                  <button id ="importData" type="submit" class="btn btn-primary px-4 float-right">Save Changes</button>
+
+
+
+                        </div>
+                    </div>
+				
+				
                 <!-- /.container-fluid -->
 
     </div>
@@ -242,6 +297,42 @@
     function logout(){
       document.cookie = "username=; path=/;";
     }
+	
+	//get drAccountManagement form
+    $("#drAccountManagement").submit(function(e) {
+      //prevent Default functionality
+      e.preventDefault();
+      //get the fields of the form based on the id
+      let old_username = $("#old_username").val();
+      let new_username = $("#new_username").val();
+      let firstname = $("#firstname").val();
+      let lastname = $("#lastname").val();
+      let email = $("#email").val();
+	  let password = $("#password").val();
+      //make the request to the back-end (it's a GET request, just like anything else we will use)
+        $.get(
+          "http://localhost:5000/drAccountManagement",
+          {
+            old_username:old_username,
+            new_username:new_username,
+            firstname:firstname,
+            lastname:lastname,
+            email:email,
+			password:password,
+          })
+          .done(function (response) {
+            //show an alert on screen with the response from the back-end (get the value of the message field)
+            window.alert(response.message);
+            console.log(response);
+
+          })
+          .fail(function (response) {
+            //if the response status is 500 (meaning that something is wrong), the following will be executed
+            //it just shows an alert with the response from the back-end
+            window.alert(response.message);
+          });
+});
+
 
     </script>
 
