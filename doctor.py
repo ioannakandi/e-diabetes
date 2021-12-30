@@ -97,7 +97,7 @@ def drAccountManagement():
     
     #new data entry 
     if request.method == 'GET':
-        username = request.args.get('username')
+        old_username = request.args.get('old_username')
         new_username = request.args.get('new_username')
         firstname = request.args.get('firstname')
         lastname = request.args.get('lastname')
@@ -108,7 +108,7 @@ def drAccountManagement():
         new_values = { "$set": { 'firstname': firstname,'lastname': lastname,
                                   'email': email, 'password':password, 'username': new_username } }        
         
-        query_cursor=users.update_many({"username":username}, new_values )
+        query_cursor=users.update_many({"username":old_username}, new_values )
      
         
         #responses for successfull update or errors respectively

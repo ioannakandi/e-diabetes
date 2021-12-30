@@ -84,7 +84,7 @@ def signup():
         if existingUser.count() !=0 :
             return Response('{"status":"anotheruser"}', status=500, mimetype="application/json")
         else:
-            users.insert_one({'firstName': firstName,'lastName': lastName,'username': username,
+            users.insert_one({'firstname': firstName,'lastname': lastName,'username': username,
                                   'email': email, 'password':password, 'userType':userType})
             return Response('{"status":"success"}', status=200, mimetype="application/json")
     return Response('{"status":"error"}', status=500, mimetype="application/json")
@@ -210,6 +210,35 @@ def perscriptionImport():
         #responses for successfull data import or errors respectively
         return Response('{"message":"Perscription imported successfully!"}', status=200, mimetype="application/json")
     return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json") 
+
+
+#doctor's account management endpoint
+@app.route("/drAccountManagement",methods=['GET', 'POST'])
+@cross_origin()
+def drAccountManagement():
+    
+    #new data entry 
+    if request.method == 'GET':
+        old_username = request.args.get('old_username')
+        new_username = request.args.get('new_username')
+        firstname = request.args.get('firstname')
+        lastname = request.args.get('lastname')
+        email = request.args.get('email')
+        password = request.args.get('password')
+        
+
+        
+        new_values = { "$set": { 'firstname': firstname,'lastname': lastname,
+                                  'email': email, 'password':password, 'username': new_username } }        
+        
+        query_cursor=users.update_many({"username":old_username}, new_values )
+     
+        
+        #responses for successfull update or errors respectively
+        return Response('{"message":"All set! Chages saved successfully."}', status=200, mimetype="application/json")
+    return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json") 
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

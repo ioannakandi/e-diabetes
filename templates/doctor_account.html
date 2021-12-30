@@ -176,12 +176,9 @@
 
 
 							<div class="form-group row">
-                                    <div class="col-sm-6">
-                                        <label for="old_username" >Current Username </label>
-                                        <input type="text" class="form-control" id="old_username" name="old_username" placeholder="current username" required >
-                                    </div>
 
-									<div class="col-sm-6">
+
+									<div class="col-sm-12">
                                         <label for="new_username" >New Username </label>
                                         <input type="text"  class="form-control" id="new_username" name="new_username" placeholder="new username" required >
                                     </div>
@@ -303,7 +300,7 @@
       //prevent Default functionality
       e.preventDefault();
       //get the fields of the form based on the id
-      let old_username = $("#old_username").val();
+      let old_username = $("#username").text();
       let new_username = $("#new_username").val();
       let firstname = $("#firstname").val();
       let lastname = $("#lastname").val();
