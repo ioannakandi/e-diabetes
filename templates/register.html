@@ -66,11 +66,8 @@
                                             id="password" placeholder="Password" required>
                                     </div>
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                      <input list="userType" class="form-control form-control-user" placeholder="User Type" required>
-                                      <datalist id="userType">
-                                        <option value="Doctor">
-                                        <option value="Patient">
-                                      </datalist>
+                                      <input type="text" id="userType" class="form-control form-control-user" pattern="doctor|radiologist"
+                                      title="doctor or patient" placeholder="User Type" required>
                                     </div>
                                 </div>
                                 <input type="submit" class="btn btn-success btn-user btn-block" value="Register Account">
