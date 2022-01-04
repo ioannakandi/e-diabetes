@@ -239,6 +239,25 @@ def drAccountManagement():
     return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json") 
 
 
+#this is the endpoint for importing patient's data from patient's view
+@app.route('/data_import',methods=['GET', 'POST'])
+@cross_origin()
+def data_import():
+    if request.method == 'GET':
+        #get the needed arguments (Glucose,BloodPressure,Insulin,BMI,Age)
+        username = request.args.get('username')
+        age = request.args.get('age')
+        bmi = request.args.get('bmi')
+        glucose = request.args.get('glucose')
+        bloodPressure = request.args.get('bloodPressure')
+        insulin = request.args.get('insulin')
+        now = datetime.now()
+        today = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        patient_data.insert_one({'username': username,'age': int(age),'bmi': int(bmi),'gluose': int(glucose),
+                                 'bloodPressure':int(bloodPressure),'insulin': int(insulin),'date': today})
+        return Response('{"message" : "imported data is successful"}', status=200, mimetype="application/json")
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
