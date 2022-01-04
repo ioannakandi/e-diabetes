@@ -2,7 +2,7 @@
 
 """
 
-Created on Tue 4 Jan 15:28:47 2022
+Created on Tue 4 Jan 23:46:07 2022
 
 @author: Pavlos Nikolaos Toumlelis
 """
@@ -13,6 +13,7 @@ from pymongo.errors import DuplicateKeyError
 from flask import Flask, render_template, flash, request, Markup, session, Response, send_file
 from flask_mail import Mail, Message
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
+from pprint import pprint
 import time, os, sys
 from datetime import datetime
 from flask_cors import CORS, cross_origin
@@ -106,7 +107,6 @@ def sendemail(doctor, patient, BloodPressure):
    msg.body = "The blood pressure of the patient "+str(patient)+" is abnormal "+"("+str(BloodPressure)+")"
    mail.send(msg)
 
-
 #this is the endpoint for importing patient's data from patient's view
 @app.route('/data_import',methods=['GET', 'POST'])
 @cross_origin()
@@ -152,6 +152,25 @@ def PatientAccountManagement():
         #responses for successful update or errors respectively
         return Response('{"message":"All set! Changes saved successfully."}', status=200, mimetype="application/json")
  return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json")
+
+
+ # endpoint for prescription view from patient's view
+@app.route("/prescriptionView",methods=['GET', 'POST'])
+@cross_origin()
+def prescriptionView():
+#get the needed arguments
+    if request.method == 'GET':
+        username = request.args.get('username')
+        perscription = request.args.get('perscription')
+
+#prescription_view variable finds the patient's perscriptions that doctor have imported.
+#Additionally, maximum limit for prescriptions has been defined to 3
+#pprint has been used in order to see the data in easy read format
+        prescription_view = patient_data.find({"username" : username,}, perscription).limit(3)
+        for perscription in prescription_view:
+                 pprint(perscription)
+
+        return Response('{"status" : "These are your prescriptions"}', status=200, mimetype="application/json")
 
 
 if __name__ == "__main__":
