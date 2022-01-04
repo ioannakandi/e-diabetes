@@ -196,7 +196,7 @@
                                 <div class="form-group row">
 									 <div class="col-sm-6">
                                         <label for="username">Username</label>
-                                        <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" required >
+                                        <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" required disabled>
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="Glucose">Glucose</label>
@@ -312,6 +312,8 @@
     }
     //show the username on the top right side.
     document.getElementById('username').innerHTML += getCookie("username");
+    //fill the username field of the form with the username cookie
+    document.getElementById('Username').value += getCookie("username");
 
     //this is the function to log out (set username cookie as null)
     function logout(){
