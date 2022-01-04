@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
-#Created on Tue Dec 28 16:27:15 2021
+"""
 
-#author: Pavlos Nikolaos Toumlelis
+Created on Tue 4 Jan 15:28:47 2022
 
+@author: Pavlos Nikolaos Toumlelis
+"""
 
 import pymongo
 from pymongo import MongoClient
@@ -12,7 +14,7 @@ from flask import Flask, render_template, flash, request, Markup, session, Respo
 from flask_mail import Mail, Message
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 import time, os, sys
-import datetime
+from datetime import datetime
 from flask_cors import CORS, cross_origin
 import json
 import csv
@@ -41,7 +43,7 @@ CORS(app)
 mail= Mail(app)
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'XXX'
+app.config['MAIL_USERNAME'] = 'kostismvg@gmail.com'
 app.config['MAIL_PASSWORD'] = 'XXX'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
@@ -68,7 +70,7 @@ def signup():
         if existingUser.count() !=0 :
             return Response('{"status":"anotheruser"}', status=500, mimetype="application/json")
         else:
-            users.insert_one({'firstName': firstName,'lastName': lastName,'username': username,
+            users.insert_one({'firstname': firstName,'lastname': lastName,'username': username,
                                   'email': email, 'password':password, 'userType':userType})
             return Response('{"status":"success"}', status=200, mimetype="application/json")
     return Response('{"status":"error"}', status=500, mimetype="application/json")
@@ -95,32 +97,61 @@ def signin():
             return Response('{"userType":"nonexistent"}', status=500, mimetype="application/json")
     return Response('{"userType":"nonexistent"}', status=500, mimetype="application/json")
 
-@app.route("/sendemail")
-def sendemail():
-   username = request.args.get('username')
-   doctor_found = users.find({'username':username},{"email": 1, "_id":0})
+#this is a function to send an email if the blood pressure o a patient is high
+def sendemail(doctor, patient, BloodPressure):
+   doctor_found = users.find({'username':doctor},{"email": 1, "_id":0})
    doctor_found_list_cur = list(doctor_found)
    doctor_email = doctor_found_list_cur[0].get("email")
-   msg = Message('Hello', sender = 'XXX', recipients = [doctor_email])
-   msg.body = "Hello Flask message sent from Flask-Mail"
+   msg = Message('Abnormal Blood Pressure', sender = 'kostismvg@gmail.com', recipients = [doctor_email])
+   msg.body = "The blood pressure of the patient "+str(patient)+" is abnormal "+"("+str(BloodPressure)+")"
    mail.send(msg)
-   return "Sent"
 
 
 #this is the endpoint for importing patient's data from patient's view
 @app.route('/data_import',methods=['GET', 'POST'])
 @cross_origin()
 def data_import():
-    if request.method == 'GET':
-        #get the needed arguments (Glucose,BloodPressure,Insulin,BMI,Age)
-        username = request.args.get('username')
-        Glucose = request.args.get('Glucose')
-        BloodPressure = request.args.get('BloodPressure')
-        Insulin = request.args.get('Insulin')
-        BMI = request.args.get('BMI')
-        Age = request.args.get('Age')
-        patient_data.insert_one({'username': username, 'Glucose' : Glucose, 'BloodPressure' : BloodPressure, 'Insulin' : Insulin, 'BMI' : BMI, 'Age' : Age})
-        return Response('{"status" : "imported data is successful"}')
+
+ if request.method == 'GET' :
+
+     #get the needed arguments (Glucose,BloodPressure,Insulin,BMI,Age)
+     username = request.args.get('username')
+     glucose = request.args.get('glucose')
+     bloodPressure = request.args.get('bloodPressure')
+     insulin = request.args.get('insulin')
+     bmi = request.args.get('bmi')
+     age = request.args.get('age')
+     now = datetime.now()
+     today = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+
+     patient_data.insert_one({'username': username, 'gluose' : int(glucose), 'bloodPressure' : int(bloodPressure),
+                              'insulin' : int(insulin), 'bmi' : int(bmi), 'age' : int(age), 'date': today })
+
+     return Response('{"status" : "imported data is successful"}', status=200, mimetype="application/json")
+
+#this is the endpoint for patient account management
+@app.route('/PatientAccountManagement',methods=['GET', 'POST'])
+@cross_origin()
+def PatientAccountManagement():
+
+ if request.method == 'GET' :
+
+     #patient will manage their personal data
+        old_username = request.args.get('old_username')
+        new_username = request.args.get('new_username')
+        firstname = request.args.get('firstname')
+        lastname = request.args.get('lastname')
+        email = request.args.get('email')
+        password = request.args.get('password')
+
+        personalData= { "$set": { 'username': new_username, 'firstname': firstname,
+                                      'lastname': lastname, 'email': email, 'password': password }}
+
+        query_cursor=users.update_many ( {"username": old_username}, personalData)
+
+        #responses for successful update or errors respectively
+        return Response('{"message":"All set! Changes saved successfully."}', status=200, mimetype="application/json")
+ return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json")
 
 
 if __name__ == "__main__":
