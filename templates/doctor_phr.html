@@ -199,6 +199,25 @@
 
                         </div>
                     </div>
+					
+					<br><br><br>
+					<div class="table-responsive">          
+					  <table class="table" id="patients">
+						<thead>
+						  <tr>
+							<th>Username</th>
+							<th>Age</th>
+							<th>BMI</th>
+							<th>Glucose</th>
+							<th>Blood Pressure</th>
+							<th>Insulin</th>
+							<th>Date</th>
+							<th>Prescription</th>
+						  </tr>
+						</thead>
+						<tbody></tbody>
+					  </table>
+					  </div>
 
 
 
@@ -312,6 +331,45 @@
             //show an alert on screen with the response from the back-end (get the value of the message field)
             window.alert(response.message);
             console.log(response);
+
+          })
+          .fail(function (response) {
+            //if the response status is 500 (meaning that something is wrong), the following will be executed
+            //it just shows an alert with the response from the back-end
+            window.alert(response.message);
+          });
+
+
+
+  });
+  
+  //fill the patients table when the page is loaded
+    $(document).ready(function() {
+      //make the request to the back-end (it's a GET request, just like anything else we will use)
+        $.get(
+          "http://localhost:5000/getAllData")
+          .done(function (response) {
+            console.log(response);
+			for (var patient of response)
+           {
+               //fill in the patients table
+               var markup = `<tr>
+                 <td class="align-middle">${patient.username}</td>
+                 <td class="align-middle">${patient.age}</td>
+                 <td class="align-middle">${patient.bmi}</td>
+                 <td class="align-middle">${patient.gluose}</td>
+				 <td class="align-middle">${patient.bloodPressure}</td>
+                 <td class="align-middle">${patient.insulin}</td>
+                 <td class="align-middle">${patient.date}</td>
+                 <td class="align-middle">${patient.perscription}</td>
+                 </tr>`;
+                 $("#patients tbody").append(markup);
+
+				
+
+
+           }
+       
 
           })
           .fail(function (response) {
