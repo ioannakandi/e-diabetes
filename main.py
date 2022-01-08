@@ -238,6 +238,18 @@ def drAccountManagement():
         return Response('{"message":"All set! Chages saved successfully."}', status=200, mimetype="application/json")
     return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json") 
 
+# endpoint for retrieving all patients' data in list form
+@app.route("/getAllData",methods=['GET', 'POST'])
+@cross_origin()
+def getAllData():
+    if request.method == 'GET':
+        #retrieve the data
+        query_cursor = patient_data.find({},{"_id": 0})
+        # convert cursor object to python list
+        list_cur = list(query_cursor)
+        return Response(json.dumps(list_cur), status=200, mimetype="application/json")
+    return Response('{"message":"Please try again"}', status=500, mimetype="application/json")
+
 
 #this is the endpoint for importing patient's data from patient's view
 @app.route('/data_import',methods=['GET', 'POST'])
