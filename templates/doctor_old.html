@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>e-diabetes - Doctor</title>
+    <title>e-diabetes - doctor</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,7 +19,6 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -43,7 +42,7 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="doctor.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
@@ -72,7 +71,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link active" href="doctor_account.html">
+                <a class="nav-link" href="doctor_account.html">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Account</span></a>
             </li>
@@ -120,6 +119,24 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
 
 
                         <div class="topbar-divider d-none d-sm-block"></div>
@@ -164,64 +181,52 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Account</h1>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 
-                </div>
-				<br><br>
+                    </div>
 
-				  <form style="width:90%; margin:auto;" id="drAccountManagement">
-                    <h4 class="h2-responsive" style="text-align:center;">Manage your Account</h4>
 					<br><br>
-                    <div class="row centerAccountSettings">
-                        <div class="col-md-14 mx-auto">
-
-
-
-							<div class="form-group row ">
-
-
-									<div class="col-sm-13">
-                                        <label for="new_username" >New Username </label>
-                                        <input type="text"  class="form-control" id="new_username" name="new_username" placeholder="new username" required >
-                                    </div>
-								</div>
+					 <!-- doctor data import form -->
+                    <form style="width:90%; margin:auto;" id="dataImportForm">
+                    <h4 class="h2-responsive" style="text-align:center;">Data Import</h4>
+                    <div class="row">
+                        <div class="col-md-10 mx-auto">
 
                                 <div class="form-group row">
-                                     <div class="col-sm-13">
-                                        <label for="firstname">First Name</label>
-                                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="first name" required >
-
-							    </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-sm-13">
-                                <label for="lastname">Last Name</label>
-                                <input type="text" class="form-control" id="lastname" name="lastname" placeholder="last name" required >
-                            </div>
-                        </div>
-
-
-                        <div class="form-group row">
-                            <div class="col-sm-13">
-                                        <label for="email">e-mail</label>
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="e-mail" required >
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-13">
-                                        <label for="password">Password</label>
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="password" required >
-                            </div>
-                        </div>
+									 <div class="col-sm-6">
+                                        <label for="username">Username</label>
+                                        <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" required >
                                     </div>
-
+                                    <div class="col-sm-6">
+                                        <label for="Glucose">Glucose</label>
+                                        <input type="number" class="form-control" id="Glucose" name="Glucose" placeholder="Glucose" required min="1" max="300">
+                                    </div>
 								</div>
 
+								 <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="BloodPressure">BloodPressure</label>
+                                        <input type="number" class="form-control" id="BloodPressure" name="BloodPressure" placeholder="BloodPressure" required min="1" max="200">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="Insulin">Insulin</label>
+                                        <input type="number" class="form-control" id="Insulin" name="Insulin" placeholder="Insulin" required min="1" max="900">
+                                    </div>
+								</div>
 
+								 <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        <label for="BMI">BMI</label>
+                                        <input type="number" class="form-control" id="BMI" name="BMI" placeholder="BMI" required min="1" max="100">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label for="Age">Age</label>
+                                        <input type="number" class="form-control" id="Age" name="Age" placeholder="Age" required min="1" max="120">
+                                    </div>
 
-
-                                <button id ="importData" type="submit" style="background-color:green" class="btn btn-primary px-4 float-right">Save Changes</button>
+                                  </div>
+                                  <button id ="importData" type="submit" class="btn btn-primary px-4 float-right">Import</button>
 
 
 
@@ -229,20 +234,27 @@
                     </div>
 
 
+                </div>
                 <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; e-diabetes 2021-2022</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
-
-	<!-- Footer -->
-				<footer class="sticky-footer bg-white">
-					<div class="container my-auto">
-						<div class="copyright text-center my-auto">
-							<span>Copyright &copy; e-diabetes 2021-2022</span>
-						</div>
-					</div>
-				</footer>
-				<!-- End of Footer -->
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -306,27 +318,27 @@
       document.cookie = "username=; path=/;";
     }
 
-	//get drAccountManagement form
-    $("#drAccountManagement").submit(function(e) {
+	//get the prediction form by id
+    $("#dataImportForm").submit(function(e) {
       //prevent Default functionality
       e.preventDefault();
       //get the fields of the form based on the id
-      let old_username = $("#username").text();
-      let new_username = $("#new_username").val();
-      let firstname = $("#firstname").val();
-      let lastname = $("#lastname").val();
-      let email = $("#email").val();
-	  let password = $("#password").val();
+      let Glucose = $("#Glucose").val();
+      let BloodPressure = $("#BloodPressure").val();
+      let Insulin = $("#Insulin").val();
+      let BMI = $("#BMI").val();
+      let Age = $("#Age").val();
+	  let Username = $("#Username").val();
       //make the request to the back-end (it's a GET request, just like anything else we will use)
         $.get(
-          "http://localhost:5000/drAccountManagement",
+          "http://localhost:5000/drDataImport",
           {
-            old_username:old_username,
-            new_username:new_username,
-            firstname:firstname,
-            lastname:lastname,
-            email:email,
-			password:password,
+            glucose:Glucose,
+            bloodPressure:BloodPressure,
+            insulin:Insulin,
+            bmi:BMI,
+            age:Age,
+			      username:Username,
           })
           .done(function (response) {
             //show an alert on screen with the response from the back-end (get the value of the message field)
@@ -341,9 +353,7 @@
           });
 });
 
-
     </script>
-
 
 </body>
 

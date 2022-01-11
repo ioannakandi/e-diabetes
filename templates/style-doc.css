@@ -1,0 +1,17 @@
+.centerDoc {
+    text-align: center;
+    
+    background-color: rgba(197, 197, 197, 0.0)};
+}
+
+.float-center{
+    
+}
+button.float-right.btn.btn-primary.px-4{
+    
+    background-color: green;
+}
+
+label{
+    color:rgb(54, 54, 54)
+}
