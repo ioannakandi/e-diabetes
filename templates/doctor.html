@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style-doc.css">
 
 </head>
 
@@ -190,43 +191,48 @@
 					 <!-- doctor data import form -->
                     <form style="width:90%; margin:auto;" id="dataImportForm">
                     <h4 class="h2-responsive" style="text-align:center;">Data Import</h4>
-                    <div class="row">
+                    <div class="row centerDoc">
                         <div class="col-md-10 mx-auto">
-
+                          <br><br>
                                 <div class="form-group row">
-									 <div class="col-sm-6">
+									 <div class="col-sm-4">
                                         <label for="username">Username</label>
                                         <input type="text" class="form-control" id="Username" name="Username" placeholder="Username" required >
                                     </div>
-                                    <div class="col-sm-6">
+                                </div>
+                                </div>
+                            </div>
+                            <br><br>
+                                <div class="row centerDoc">
+                                    <div class="col-md-10 mx-auto">
+                                    <div class="form-group row">
+
+                                    <div class="col-sm-2">
                                         <label for="Glucose">Glucose</label>
                                         <input type="number" class="form-control" id="Glucose" name="Glucose" placeholder="Glucose" required min="1" max="300">
                                     </div>
-								</div>
-
-								 <div class="form-group row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-2">
                                         <label for="BloodPressure">BloodPressure</label>
                                         <input type="number" class="form-control" id="BloodPressure" name="BloodPressure" placeholder="BloodPressure" required min="1" max="200">
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-2">
                                         <label for="Insulin">Insulin</label>
                                         <input type="number" class="form-control" id="Insulin" name="Insulin" placeholder="Insulin" required min="1" max="900">
                                     </div>
-								</div>
 
-								 <div class="form-group row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-2">
                                         <label for="BMI">BMI</label>
                                         <input type="number" class="form-control" id="BMI" name="BMI" placeholder="BMI" required min="1" max="100">
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-2">
                                         <label for="Age">Age</label>
                                         <input type="number" class="form-control" id="Age" name="Age" placeholder="Age" required min="1" max="120">
                                     </div>
 
                                   </div>
-                                  <button id ="importData" type="submit" class="btn btn-primary px-4 float-right">Import</button>
+                                  </div>
+                                </div>
+                                  <button id ="importData" type="submit" style="background-color:green" class="btn btn-primary px-4 float-right">Import</button>
 
 
 
