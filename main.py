@@ -268,6 +268,47 @@ def data_import():
         patient_data.insert_one({'username': username,'age': int(age),'bmi': int(bmi),'gluose': int(glucose),
                                  'bloodPressure':int(bloodPressure),'insulin': int(insulin),'date': today})
         return Response('{"message" : "imported data is successful"}', status=200, mimetype="application/json")
+    
+    
+# endpoint for prescription view from patient's view
+@app.route("/prescriptionView",methods=['GET', 'POST'])
+@cross_origin()
+def prescriptionView():
+#get the needed arguments
+    if request.method == 'GET':
+        #get the needed arguments (username)
+        username = request.args.get('username')
+        #retrieve the data
+        query_cursor = patient_data.find({"username":username},{"perscription": 1, "_id":0}).limit(1)
+        # convert cursor object to python list
+        list_cur = list(query_cursor)
+        return Response(json.dumps(list_cur), status=200, mimetype="application/json")
+    return Response('{"message":"Please try again"}', status=500, mimetype="application/json")
+
+#this is the endpoint for patient account management
+@app.route('/PatientAccountManagement',methods=['GET', 'POST'])
+@cross_origin()
+def PatientAccountManagement():
+
+ if request.method == 'GET' :
+
+     #patient will manage their personal data
+        old_username = request.args.get('old_username')
+        new_username = request.args.get('new_username')
+        firstname = request.args.get('firstname')
+        lastname = request.args.get('lastname')
+        email = request.args.get('email')
+        password = request.args.get('password')
+
+        personalData= { "$set": { 'username': new_username, 'firstname': firstname,
+                                      'lastname': lastname, 'email': email, 'password': password }}
+
+        query_cursor=users.update_many ( {"username": old_username}, personalData)
+
+        #responses for successful update or errors respectively
+        return Response('{"message":"All set! Changes saved successfully."}', status=200, mimetype="application/json")
+ return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json")
+
 
 
 
