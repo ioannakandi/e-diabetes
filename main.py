@@ -48,8 +48,8 @@ CORS(app)
 mail= Mail(app)
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'kostismvg@gmail.com'
-app.config['MAIL_PASSWORD'] = 'XXX'
+app.config['MAIL_USERNAME'] = 'gibm3112@gmail.com'
+app.config['MAIL_PASSWORD'] = '20213112!!!'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
@@ -59,7 +59,7 @@ def sendemail(doctor, patient, BloodPressure):
    doctor_found = users.find({'username':doctor},{"email": 1, "_id":0})
    doctor_found_list_cur = list(doctor_found)
    doctor_email = doctor_found_list_cur[0].get("email")
-   msg = Message('Abnormal Blood Pressure', sender = 'kostismvg@gmail.com', recipients = [doctor_email])
+   msg = Message('Abnormal Blood Pressure', sender = 'gibm3112@gmail.com', recipients = [doctor_email])
    msg.body = "The blood pressure of the patient "+str(patient)+" is abnormal "+"("+str(BloodPressure)+")"
    mail.send(msg)
 
@@ -265,6 +265,12 @@ def data_import():
         insulin = request.args.get('insulin')
         now = datetime.now()
         today = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        #check blood pressure and if it is of high value, inform the doctor
+        if(int(bloodPressure)>140):
+            try:
+                sendemail("komav", username, bloodPressure)
+            except:
+                pass
         patient_data.insert_one({'username': username,'age': int(age),'bmi': int(bmi),'gluose': int(glucose),
                                  'bloodPressure':int(bloodPressure),'insulin': int(insulin),'date': today})
         return Response('{"message" : "imported data is successful"}', status=200, mimetype="application/json")
