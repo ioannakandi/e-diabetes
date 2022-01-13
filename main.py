@@ -48,8 +48,8 @@ CORS(app)
 mail= Mail(app)
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'kostismvg@gmail.com'
-app.config['MAIL_PASSWORD'] = 'XXX'
+app.config['MAIL_USERNAME'] = 'gibm3112@gmail.com'
+app.config['MAIL_PASSWORD'] = '20213112!!!'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
@@ -59,7 +59,7 @@ def sendemail(doctor, patient, BloodPressure):
    doctor_found = users.find({'username':doctor},{"email": 1, "_id":0})
    doctor_found_list_cur = list(doctor_found)
    doctor_email = doctor_found_list_cur[0].get("email")
-   msg = Message('Abnormal Blood Pressure', sender = 'kostismvg@gmail.com', recipients = [doctor_email])
+   msg = Message('Abnormal Blood Pressure', sender = 'gibm3112@gmail.com', recipients = [doctor_email])
    msg.body = "The blood pressure of the patient "+str(patient)+" is abnormal "+"("+str(BloodPressure)+")"
    mail.send(msg)
 
@@ -265,9 +265,56 @@ def data_import():
         insulin = request.args.get('insulin')
         now = datetime.now()
         today = str(now.strftime("%d/%m/%Y %H:%M:%S"))
+        #check blood pressure and if it is of high value, inform the doctor
+        if(int(bloodPressure)>140):
+            try:
+                sendemail("komav", username, bloodPressure)
+            except:
+                pass
         patient_data.insert_one({'username': username,'age': int(age),'bmi': int(bmi),'gluose': int(glucose),
                                  'bloodPressure':int(bloodPressure),'insulin': int(insulin),'date': today})
         return Response('{"message" : "imported data is successful"}', status=200, mimetype="application/json")
+    
+    
+# endpoint for prescription view from patient's view
+@app.route("/prescriptionView",methods=['GET', 'POST'])
+@cross_origin()
+def prescriptionView():
+#get the needed arguments
+    if request.method == 'GET':
+        #get the needed arguments (username)
+        username = request.args.get('username')
+        #retrieve the data
+        query_cursor = patient_data.find({"username":username},{"perscription": 1, "_id":0}).limit(1)
+        # convert cursor object to python list
+        list_cur = list(query_cursor)
+        return Response(json.dumps(list_cur), status=200, mimetype="application/json")
+    return Response('{"message":"Please try again"}', status=500, mimetype="application/json")
+
+#this is the endpoint for patient account management
+@app.route('/PatientAccountManagement',methods=['GET', 'POST'])
+@cross_origin()
+def PatientAccountManagement():
+
+ if request.method == 'GET' :
+
+     #patient will manage their personal data
+        old_username = request.args.get('old_username')
+        new_username = request.args.get('new_username')
+        firstname = request.args.get('firstname')
+        lastname = request.args.get('lastname')
+        email = request.args.get('email')
+        password = request.args.get('password')
+
+        personalData= { "$set": { 'username': new_username, 'firstname': firstname,
+                                      'lastname': lastname, 'email': email, 'password': password }}
+
+        query_cursor=users.update_many ( {"username": old_username}, personalData)
+
+        #responses for successful update or errors respectively
+        return Response('{"message":"All set! Changes saved successfully."}', status=200, mimetype="application/json")
+ return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json")
+
 
 
 
