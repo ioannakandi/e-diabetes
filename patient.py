@@ -2,7 +2,7 @@
 
 """
 
-Created on Tue 4 Jan 23:46:07 2022
+Created on Thu 13 Jan 12:48:16 2022
 
 @author: Pavlos Nikolaos Toumlelis
 """
@@ -154,24 +154,45 @@ def PatientAccountManagement():
  return Response('{"message":"Oops! Something went wrong. Please try again."}', status=500, mimetype="application/json")
 
 
- # endpoint for prescription view from patient's view
+# endpoint for prescription view from patient's view
 @app.route("/prescriptionView",methods=['GET', 'POST'])
 @cross_origin()
 def prescriptionView():
 #get the needed arguments
     if request.method == 'GET':
-        username = request.args.get('username')
-        perscription = request.args.get('perscription')
+      username = request.args.get('username')
 
-#prescription_view variable finds the patient's perscriptions that doctor have imported.
-#Additionally, maximum limit for prescriptions has been defined to 3
-#pprint has been used in order to see the data in easy read format
-        prescription_view = patient_data.find({"username" : username,}, perscription).limit(3)
-        for perscription in prescription_view:
-                 pprint(perscription)
+      #prescription_view variable finds the patient's perscriptions that doctor have imported.
+      #Additionally, maximum limit for prescriptions has been defined to 3
+      #conversion in list form is done
+      #pprint has been used in order to see the data in easy read format
 
-        return Response('{"status" : "These are your prescriptions"}', status=200, mimetype="application/json")
+      prescription_view = patient_data.find( {"username" : username}, { "_id" : 0,  "perscription" : 1}).limit(3)
+      list_prescription_view = list(prescription_view)
+      for perscription in list_prescription_view:
+                pprint(perscription)
 
+      return Response(json.dumps(list_prescription_view), status=200, mimetype="application/json")
+      return Response('{"status" : "These are your prescriptions"}', status=200, mimetype="application/json")
+
+#this is the endpoint for patient's data view
+@app.route('/patient_dataView',methods=['GET', 'POST'])
+@cross_origin()
+def patient_dataView():
+
+ if request.method == 'GET' :
+
+     #get the needed arguments
+     username = request.args.get('username')
+
+     #data_view variable finds all the patient's imported data except perscription which
+     #can be viewed in "Perscription" template
+     #conversion in list form is done
+     data_view = patient_data.find({"username" : username}, {"_id" : 0, "perscription" : 0})
+     list_data_view = list(data_view)
+
+     return Response(json.dumps(list_data_view), status=200, mimetype="application/json")
+     return Response('{"status" : "these are all your imported data"}', status=200, mimetype="application/json")
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
