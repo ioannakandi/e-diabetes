@@ -317,6 +317,27 @@ def PatientAccountManagement():
 
 
 
+#this is the endpoint for patient's data view
+@app.route('/patient_dataView',methods=['GET', 'POST'])
+@cross_origin()
+def patient_dataView():
+
+ if request.method == 'GET' :
+
+     #get the needed arguments
+     username = request.args.get('username')
+
+     #data_view variable finds all the patient's imported data except perscription which
+     #can be viewed in "Perscription" template
+     #conversion in list form is done
+     data_view = patient_data.find({"username" : username}, {"_id" : 0, "perscription" : 0})
+     list_data_view = list(data_view)
+
+     return Response(json.dumps(list_data_view), status=200, mimetype="application/json")
+     
+ 
+    
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
